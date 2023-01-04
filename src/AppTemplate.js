@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 
-const App = () => {
+const AppTemplate = () => {
   return (
     <div className="App">
       <header className="App-header">
@@ -22,4 +22,4 @@ const App = () => {
   );
 }
 
-export default App;
+export default AppTemplate;
