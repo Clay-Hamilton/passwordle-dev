@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Modal from 'react-modal';
 import './App.css';
-import OptionModal from './OptionModal';
 
 
 const AppModal = () => {
@@ -34,11 +33,6 @@ const AppModal = () => {
   return (
     <div className="App">
       <h1>Passwordle</h1>
-
-      <OptionModal
-      selectedOption={this.state.selectedOption}
-      handleClearSelectedOption = {this.handleClearSelectedOption}
-      />
     <p>Username:</p>
     <form onSubmit={submit}>
       <input value={username} onChange={(e) => setUsername(e.target.value)} />
