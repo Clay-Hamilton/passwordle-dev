@@ -4,8 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import LoginModal from './LoginModal';
-import AppModal from './AppModalTestCopy';
-import AppTemplate from './AppTemplate';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
