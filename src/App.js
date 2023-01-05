@@ -65,6 +65,7 @@ const App = () => {
       <form onSubmit={submit}>
         <input value={password} onChange={(e) => setPassword(e.target.value)} />
       </form>
+      <br></br>
       <h3>Computer Voice: {compMessage}</h3>
     </div>
   )
