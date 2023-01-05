@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { useState } from 'react';
+import Button from '@mui/material/Button';
+import SignIn from './SignIn';
 
 
 const App = () => {
@@ -46,6 +47,7 @@ const App = () => {
   return (
     <div className="App">
       <h1>Passwordle</h1>
+      <SignIn></SignIn>
       <h2>Level {levelcount}: {levelnames[levelcount]}</h2>
       <button onClick={() => setLevelCount(levelcount - 1)}>
         Previous Level
