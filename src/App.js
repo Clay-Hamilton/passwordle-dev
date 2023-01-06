@@ -3,6 +3,7 @@ import './App.css';
 import Button from '@mui/material/Button';
 import SignIn from './SignIn';
 import Box from '@mui/material/Box';
+import { useSlotProps } from '@mui/base';
 
 
 const App = () => {
@@ -11,6 +12,7 @@ const App = () => {
   const [remember, setRemember] = useState(false)
   const [compMessage, setCompMessage] = useState("")
   const [levelcount, setLevelCount] = useState(0)
+  const [resetForm, setResetForm] = useState(false) //used to reset Username and Password fields of form:
 
   const levelnames = ["Please Introduce Yourself", "The Beginning", "The End"]
   const introcompmessages = ["Welcome to Passwordle. Please sign up using the form below."]
@@ -38,6 +40,14 @@ const App = () => {
     setCompMessage(introcompmessages[levelcount])
   }, [levelcount])
 
+  const resetLevel = () => {
+    setLevelCount(0)
+    setCompMessage(introcompmessages[levelcount]) //in case it's already at level 0:
+    setUsername("")
+    setPassword("")
+    setResetForm(!resetForm)
+  }
+
   const handleSignIn = (username, password, remember) => {
     setUsername(username)
     if (remember) {setRemember(true)}
@@ -53,15 +63,37 @@ const App = () => {
         setCompMessage("Error: Your password cannot be shorter than 6 characters.")
       }
       else if(password.length>255) {
-        setCompMessage('Error: Your password cannot be longer than 255 characters')
+        setCompMessage('Error: Your password cannot be longer than 255 characters.')
       }
+      else if(password.match(/\s/u)) {
+        setCompMessage('Error: Your password cannot include spaces.')
+      }
+      else if(!password.match(/\d/u)) {
+        setCompMessage('Error: Your password must contain a number.')
+      }
+      else if(!password.match(/[a-z]/u)) {
+        setCompMessage('Error: Your password must contain a lowercase letter.')
+      }
+      else if(!password.match(/[A-Z]/u)) {
+        setCompMessage('Error: Your password must contain a capital.')
+      }
+    
+      
       else {
         if (remember) {
           setCompMessage("Fantastic! [" + username + "] is a great username and [" + password + "] is an... okay password. But I guess it'll do for now.")
-
+          setTimeout(() => {
+            setLevelCount(levelcount+1)
+          }, 3000)
         }
         else {
-          setCompMessage("Ooh! You didn't tell us to remember you. Sorry!")
+          setCompMessage("Thanks for signing up! Welcome to Passwordle.")
+          setTimeout(() => {
+            setCompMessage("Ooh! You didn't tell me to remember you, so I... forgot your informatino. Sorry! You'll have to enter it again. :)")
+            setTimeout(() => {
+              resetLevel()
+            }, 3000)
+          }, 3000)
         }
       }
     }
@@ -71,7 +103,10 @@ const App = () => {
     <div className="App">
       <h2>Passwordle</h2>
       <p>Computer Voice: <b>{compMessage}</b></p>
-      <SignIn onSubmit={handleSignIn}></SignIn>
+      <SignIn 
+        onSubmit={handleSignIn}
+        reset={resetForm}
+      ></SignIn>
 
       <Box
       sx={{
@@ -91,13 +126,7 @@ const App = () => {
       <Button onClick={() => setLevelCount(levelcount - 1)}>
         Previous Level
       </Button>
-      <Button onClick={() => {
-        setLevelCount(0)
-        setCompMessage(introcompmessages[levelcount]) //in case it's already at level 0:
-        setUsername("")
-        setPassword("")
-    }
-      }>
+      <Button onClick={resetLevel}>
         Reset
       </Button>
       <Button onClick={() => setLevelCount(levelcount + 1)}>

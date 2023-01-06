@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -17,6 +17,13 @@ export default function SignIn(props) {
 
   const [usernameForm, setUsernameForm] = useState("")
   const [passwordForm, setPasswordForm] = useState("")
+  const [rememberForm, setRememberForm] = useState(false)
+
+  useEffect(() => {
+    setUsernameForm("")
+    setPasswordForm("")
+    setRememberForm(false)
+  }, [props.reset])
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -32,6 +39,9 @@ export default function SignIn(props) {
     }
     else if (event.target.name === "password") {
       setPasswordForm(event.target.value);
+    }
+    else if (event.target.name === "remember") {
+      setRememberForm(!rememberForm);
     }
   };
 
@@ -72,13 +82,21 @@ export default function SignIn(props) {
               fullWidth
               name="password"
               label="Password"
-              // type="password"
+              type="password"
               id="password"
               value={passwordForm}
               onChange={handleChange}
             />
             <FormControlLabel
-              control={<Checkbox name="remember" value="remember" color="primary" />}
+              control={
+                <Checkbox 
+                name="remember" 
+                value="remember" 
+                color="primary"
+                checked={rememberForm}
+                onChange={handleChange}
+                />
+              }
               label="Remember me"
             />
             <Button
