@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import Button from '@mui/material/Button';
 import SignIn from './SignIn';
+import Box from '@mui/material/Box';
 
 
 const App = () => {
@@ -31,8 +32,9 @@ const App = () => {
     localStorage.setItem("password", JSON.stringify(password))
   }, [password])
 
-  const submit = (e) => {
-    e.preventDefault()
+  const handleSignIn = (username, password) => {
+    // console.log("submitted")
+    // console.log("Username: " + username + " Password: " + password)
     if (username == "clayham" && password == "hunter123") {
       setCompMessage("You have logged in successfully!")
       setLevelCount(levelcount+1)
@@ -47,28 +49,33 @@ const App = () => {
   return (
     <div className="App">
       <h1>Passwordle</h1>
-      <SignIn></SignIn>
-      <h2>Level {levelcount}: {levelnames[levelcount]}</h2>
-      <button onClick={() => setLevelCount(levelcount - 1)}>
-        Previous Level
-      </button>
-      <button onClick={() => setLevelCount(0)}>
-        Reset
-      </button>
-      <button onClick={() => setLevelCount(levelcount + 1)}>
-        Next Level
-      </button>
-      <h3>Please enter your username:</h3>
-      <p>Username:</p>
-      <form onSubmit={submit}>
-        <input value={username} onChange={(e) => setUsername(e.target.value)} />
-      </form>
-      <p>Password:</p>
-      <form onSubmit={submit}>
-        <input value={password} onChange={(e) => setPassword(e.target.value)} />
-      </form>
-      <br></br>
       <h3>Computer Voice: {compMessage}</h3>
+      <SignIn onSubmit={handleSignIn}></SignIn>
+      <Box
+      sx={{
+        bgcolor: "#fff",
+        boxShadow: 1,
+        borderRadius: 2,
+        p: 2,
+        minWidth: 300,
+        maxWidth: 500,
+        alignItems: "center",
+        justifyContent: "center",
+        margin: "auto",
+
+      }}
+      >
+      <h2>Level {levelcount}: {levelnames[levelcount]}</h2>
+      <Button onClick={() => setLevelCount(levelcount - 1)}>
+        Previous Level
+      </Button>
+      <Button onClick={() => setLevelCount(0)}>
+        Reset
+      </Button>
+      <Button onClick={() => setLevelCount(levelcount + 1)}>
+        Next Level
+      </Button>
+      </Box>
     </div>
   )
 }
