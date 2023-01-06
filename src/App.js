@@ -11,49 +11,63 @@ const App = () => {
   const [compMessage, setCompMessage] = useState("")
   const [levelcount, setLevelCount] = useState(0)
 
-  const levelnames = ["Hello World", "The Beginning", "The End"]
+  const levelnames = ["Please Introduce Yourself", "The Beginning", "The End"]
+  const introcompmessages = ["Welcome to Passwordle. Please sign up using the form below."]
 
-  useEffect(() => { //retrieves username and password from local storage when page opened:
-    const storedUsername = JSON.parse(localStorage.getItem("username"))
-    if (storedUsername) {
-      setUsername(storedUsername)
-    }
-    const storedPassword = JSON.parse(localStorage.getItem("password"))
-    if (storedPassword) {
-      setPassword(storedPassword)
-    }
-  }, [])
+  // useEffect(() => { //retrieves username and password from local storage when page opened:
+  //   const storedUsername = JSON.parse(localStorage.getItem("username"))
+  //   if (storedUsername) {
+  //     setUsername(storedUsername)
+  //   }
+  //   const storedPassword = JSON.parse(localStorage.getItem("password"))
+  //   if (storedPassword) {
+  //     setPassword(storedPassword)
+  //   }
+  // }, [])
 
-  useEffect(() => { //saves username to local storage in case of page refresh
-    localStorage.setItem("username", JSON.stringify(username))
-  }, [username])
+  // useEffect(() => { //saves username to local storage in case of page refresh
+  //   localStorage.setItem("username", JSON.stringify(username))
+  // }, [username])
+
+  // useEffect(() => {
+  //   localStorage.setItem("password", JSON.stringify(password))
+  // }, [password])
 
   useEffect(() => {
-    localStorage.setItem("password", JSON.stringify(password))
-  }, [password])
+    setCompMessage(introcompmessages[levelcount])
+  }, [levelcount])
 
   const handleSignIn = (username, password) => {
-    // console.log("submitted")
-    // console.log("Username: " + username + " Password: " + password)
-    if (username == "clayham" && password == "hunter123") {
-      setCompMessage("You have logged in successfully!")
-      setLevelCount(levelcount+1)
+    setUsername(username)
+    if (levelcount == 0) {
+      console.log(password.length)
+      if (!username) {
+        setCompMessage("Error: Please enter a username.")
+      }
+      else if (!password) {
+        setCompMessage("Error: Please enter a password.")
+      }
+      else if(password.length < 6) {
+        setCompMessage("Error: Your password cannot be shorter than 6 characters.")
+      }
+      else if(password.length>255) {
+        setCompMessage('Error: Your password cannot be longer than 255 characters')
+      }
+      else {
+        setCompMessage("Fantastic! [" + username + "] is a great username and [" + password + "] is an... okay password. But I guess it'll do for now.")
+      }
     }
-    else {
-      setCompMessage("Wrong!")
-    }
-    // alert("Username: " + username + " Password: " + password)
-    // console.log("Username: " + username + " Password: " + password)
   }
 
   return (
     <div className="App">
-      <h1>Passwordle</h1>
-      <h3>Computer Voice: {compMessage}</h3>
+      <h2>Passwordle</h2>
+      <p>Computer Voice: <b>{compMessage}</b></p>
       <SignIn onSubmit={handleSignIn}></SignIn>
+
       <Box
       sx={{
-        bgcolor: "#fff",
+        backgroundColor: "#fffbed",
         boxShadow: 1,
         borderRadius: 2,
         p: 2,
@@ -69,7 +83,13 @@ const App = () => {
       <Button onClick={() => setLevelCount(levelcount - 1)}>
         Previous Level
       </Button>
-      <Button onClick={() => setLevelCount(0)}>
+      <Button onClick={() => {
+        setLevelCount(0)
+        setCompMessage(introcompmessages[levelcount]) //in case it's already at level 0:
+        setUsername("")
+        setPassword("")
+    }
+      }>
         Reset
       </Button>
       <Button onClick={() => setLevelCount(levelcount + 1)}>

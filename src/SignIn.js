@@ -17,10 +17,6 @@ export default function SignIn(props) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     props.onSubmit(data.get("username"), data.get("password"))
-    // console.log({
-    //   username: data.get('username'),
-    //   password: data.get('password'),
-    // });
   };
 
   return (
@@ -29,10 +25,17 @@ export default function SignIn(props) {
         <CssBaseline />
         <Box
           sx={{
+            backgroundColor: "#fffbed",
             marginTop: 4,
-            display: 'flex',
+            marginBottom: 4,
+            // display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
+            // alignItems: 'center',
+            boxShadow: 1,
+            borderRadius: 2,
+            boxShadow: 1,
+            borderRadius: 1,
+            p: 3,
           }}
         >
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -62,7 +65,7 @@ export default function SignIn(props) {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 1, mb: 2 }}
               onClick={()=> 
                 handleSubmit
               }
