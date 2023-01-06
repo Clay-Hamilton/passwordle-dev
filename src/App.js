@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 const App = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [remember, setRemember] = useState(false)
   const [compMessage, setCompMessage] = useState("")
   const [levelcount, setLevelCount] = useState(0)
 
@@ -37,10 +38,11 @@ const App = () => {
     setCompMessage(introcompmessages[levelcount])
   }, [levelcount])
 
-  const handleSignIn = (username, password) => {
+  const handleSignIn = (username, password, remember) => {
     setUsername(username)
+    if (remember) {setRemember(true)}
     if (levelcount == 0) {
-      console.log(password.length)
+      // console.log(password.length)
       if (!username) {
         setCompMessage("Error: Please enter a username.")
       }
@@ -54,7 +56,13 @@ const App = () => {
         setCompMessage('Error: Your password cannot be longer than 255 characters')
       }
       else {
-        setCompMessage("Fantastic! [" + username + "] is a great username and [" + password + "] is an... okay password. But I guess it'll do for now.")
+        if (remember) {
+          setCompMessage("Fantastic! [" + username + "] is a great username and [" + password + "] is an... okay password. But I guess it'll do for now.")
+
+        }
+        else {
+          setCompMessage("Ooh! You didn't tell us to remember you. Sorry!")
+        }
       }
     }
   }

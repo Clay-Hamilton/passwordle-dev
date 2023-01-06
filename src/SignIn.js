@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -13,10 +14,25 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const theme = createTheme();
 
 export default function SignIn(props) {
+
+  const [usernameForm, setUsernameForm] = useState("")
+  const [passwordForm, setPasswordForm] = useState("")
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    props.onSubmit(data.get("username"), data.get("password"))
+    props.onSubmit(data.get("username"), data.get("password"), data.get("remember"))
+    // setUsernameForm("")
+    // setPasswordForm("")
+  };
+
+  const handleChange = (event) => {
+    if (event.target.name === "username") {
+      setUsernameForm(event.target.value);
+    }
+    else if (event.target.name === "password") {
+      setPasswordForm(event.target.value);
+    }
   };
 
   return (
@@ -47,6 +63,8 @@ export default function SignIn(props) {
               label="Username"
               name="username"
               autoFocus
+              value={usernameForm}
+              onChange={handleChange}
             />
             <TextField
               margin="normal"
@@ -56,9 +74,11 @@ export default function SignIn(props) {
               label="Password"
               // type="password"
               id="password"
+              value={passwordForm}
+              onChange={handleChange}
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox name="remember" value="remember" color="primary" />}
               label="Remember me"
             />
             <Button
