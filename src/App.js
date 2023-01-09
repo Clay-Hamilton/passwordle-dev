@@ -4,6 +4,10 @@ import Button from '@mui/material/Button';
 import SignIn from './SignIn';
 import Box from '@mui/material/Box';
 import { useSlotProps } from '@mui/base';
+import Typewriter2 from 'typewriter-effect/dist/core';
+import Typewriter from 'typewriter-effect';
+import TypewriterJS from './TypewriterJS';
+
 
 
 const App = () => {
@@ -13,9 +17,26 @@ const App = () => {
   const [compMessage, setCompMessage] = useState("")
   const [levelcount, setLevelCount] = useState(0)
   const [resetForm, setResetForm] = useState(false) //used to reset Username and Password fields of form:
+  const [didTryCapital, setDidTryCapital] = useState(false)
 
-  const levelnames = ["Please Introduce Yourself", "The Beginning", "The End"]
-  const introcompmessages = ["Welcome to Passwordle. Please sign up using the form below."]
+  const levelnames = [
+    "Please Introduce Yourself", "The Beginning", "The End"
+  ]
+  const introcompmessages = [
+    "Welcome to Passwordle. Please sign up using the form below.",
+    "You have reached level " + levelcount + ". Clay hasn't designed this one yet.",
+    "You have reached level " + levelcount + ". Clay hasn't designed this one yet.",
+    "You have reached level " + levelcount + ". Clay hasn't designed this one yet.",
+    "You have reached level " + levelcount + ". Clay hasn't designed this one yet.",
+    "You have reached level " + levelcount + ". Clay hasn't designed this one yet.",
+    "You have reached level " + levelcount + ". Clay hasn't designed this one yet.",
+    "You have reached level " + levelcount + ". Clay hasn't designed this one yet.",
+    "You have reached level " + levelcount + ". Clay hasn't designed this one yet.",
+    "You have reached level " + levelcount + ". Clay hasn't designed this one yet.",
+    "You have reached level " + levelcount + ". Clay hasn't designed this one yet.",
+  ]
+
+  const typewriter = new Typewriter();
 
   // useEffect(() => { //retrieves username and password from local storage when page opened:
   //   const storedUsername = JSON.parse(localStorage.getItem("username"))
@@ -62,7 +83,7 @@ const App = () => {
       else if(password.length < 6) {
         setCompMessage("Error: Your password cannot be shorter than 6 characters.")
       }
-      else if(password.length>255) {
+      else if(password.length > 255) {
         setCompMessage('Error: Your password cannot be longer than 255 characters.')
       }
       else if(password.match(/\s/u)) {
@@ -76,6 +97,23 @@ const App = () => {
       }
       else if(!password.match(/[A-Z]/u)) {
         setCompMessage('Error: Your password must contain a capital.')
+        setDidTryCapital(true)
+      }
+      // else if(password.match(/[A-Z]/u)) {
+      //   console.log(didTryCapital)
+      //   if(!didTryCapital) {
+      //     setCompMessage('Error: Your password must NOT contain an uppercase letter.')
+      //     didTryCapital = true;
+      //   }
+      // }
+      else if(!password.match(/Funafuti/ui)) {
+        if (!didTryCapital) {
+          setCompMessage('Error: Your password must contain a capital.')
+          setDidTryCapital(true)
+        }
+        else {
+          setCompMessage('Error: Specifically, the capital of Tuvalu.')
+        }
       }
     
       
@@ -89,7 +127,7 @@ const App = () => {
         else {
           setCompMessage("Thanks for signing up! Welcome to Passwordle.")
           setTimeout(() => {
-            setCompMessage("Ooh! You didn't tell me to remember you, so I... forgot your informatino. Sorry! You'll have to enter it again. :)")
+            setCompMessage("Ooh! You didn't tell me to remember you, so I... forgot your information. Sorry! You'll have to enter it again. :)")
             setTimeout(() => {
               resetLevel()
             }, 3000)
@@ -102,7 +140,7 @@ const App = () => {
   return (
     <div className="App">
       <h2>Passwordle</h2>
-      <p>Computer Voice: <b>{compMessage}</b></p>
+      <TypewriterJS message={compMessage}/>
       <SignIn 
         onSubmit={handleSignIn}
         reset={resetForm}

@@ -18,6 +18,7 @@ export default function SignIn(props) {
   const [usernameForm, setUsernameForm] = useState("")
   const [passwordForm, setPasswordForm] = useState("")
   const [rememberForm, setRememberForm] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
     setUsernameForm("")
@@ -82,7 +83,7 @@ export default function SignIn(props) {
               fullWidth
               name="password"
               label="Password"
-              type="password"
+              type={showPassword ? "password" : ""}
               id="password"
               value={passwordForm}
               onChange={handleChange}
@@ -98,6 +99,21 @@ export default function SignIn(props) {
                 />
               }
               label="Remember me"
+            />
+            <FormControlLabel
+            control={
+              <Checkbox 
+                name="showpass" 
+                value="showpass" 
+                color="primary"
+                onChange={() => {
+                  setShowPassword(!showPassword)
+                  console.log("showPassword is now " + showPassword)
+                }
+                }
+              />
+              }
+              label="Show password"
             />
             <Button
               type="submit"
