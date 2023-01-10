@@ -24,6 +24,7 @@ export default function SignIn(props) {
     setUsernameForm("")
     setPasswordForm("")
     setRememberForm(false)
+    setShowPassword(false)
   }, [props.reset])
 
   const handleSubmit = (event) => {
@@ -43,6 +44,9 @@ export default function SignIn(props) {
     }
     else if (event.target.name === "remember") {
       setRememberForm(!rememberForm);
+    }
+    else if (event.target.name === "showpass") {
+      setShowPassword(!showPassword);
     }
   };
 
@@ -83,7 +87,7 @@ export default function SignIn(props) {
               fullWidth
               name="password"
               label="Password"
-              type={showPassword ? "password" : ""}
+              type={!showPassword ? "password" : "text"}
               id="password"
               value={passwordForm}
               onChange={handleChange}
@@ -106,11 +110,8 @@ export default function SignIn(props) {
                 name="showpass" 
                 value="showpass" 
                 color="primary"
-                onChange={() => {
-                  setShowPassword(!showPassword)
-                  console.log("showPassword is now " + showPassword)
-                }
-                }
+                checked={showPassword}
+                onChange={handleChange}
               />
               }
               label="Show password"

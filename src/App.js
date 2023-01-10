@@ -99,13 +99,6 @@ const App = () => {
         setCompMessage('Error: Your password must contain a capital.')
         setDidTryCapital(true)
       }
-      // else if(password.match(/[A-Z]/u)) {
-      //   console.log(didTryCapital)
-      //   if(!didTryCapital) {
-      //     setCompMessage('Error: Your password must NOT contain an uppercase letter.')
-      //     didTryCapital = true;
-      //   }
-      // }
       else if(!password.match(/Funafuti/ui)) {
         if (!didTryCapital) {
           setCompMessage('Error: Your password must contain a capital.')

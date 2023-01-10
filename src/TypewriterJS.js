@@ -19,7 +19,7 @@ const TypewriterJS = (props) => {
         options={{
           strings: props.message,
           autoStart: true,
-          delay: 70
+          delay: 50
         }}
       />
     </div>
