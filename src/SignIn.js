@@ -20,13 +20,28 @@ export default function SignIn(props) {
   const [rememberForm, setRememberForm] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
-  useEffect(() => {
+  useEffect(() => { //resets game:
     setUsernameForm("")
     setPasswordForm("")
     setRememberForm(false)
     setShowPassword(false)
   }, [props.reset])
+  
 
+  useEffect(() => {
+    setUsernameForm(props.formUsername)
+  }, [props.formUsername])
+
+  useEffect(() => {
+    setUsernameForm(props.formPassword)
+  }, [props.formPassword])
+
+  useEffect(() => {
+    setUsernameForm(props.formPassword)
+  }, [props.formPassword])
+
+
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -46,7 +61,13 @@ export default function SignIn(props) {
       setRememberForm(!rememberForm);
     }
     else if (event.target.name === "showpass") {
-      setShowPassword(!showPassword);
+      if (props.levelcount == 1 && !showPassword) {
+        setPasswordForm("Hunter123")
+        setShowPassword(true);
+      }
+      else {
+        setShowPassword(!showPassword);
+      }
     }
   };
 
