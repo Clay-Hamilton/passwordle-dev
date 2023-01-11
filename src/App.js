@@ -40,6 +40,14 @@ const App = () => {
     "You have reached level " + levelcount + ". Clay hasn't designed this one yet.",
   ]
 
+  const answers = [
+    ["clayham", "Funafuti12"],
+    ["James", "Hunter123"],
+    ["clayham", "Elephant47!"],
+    ["Erica", "mushroom"],
+    ["clayham", "pureintelligence"],
+  ]
+
   // useEffect(() => { //retrieves username and password from local storage when page opened:
   //   const storedUsername = JSON.parse(localStorage.getItem("username"))
   //   if (storedUsername) {
@@ -95,6 +103,13 @@ const App = () => {
     setTimeout(() => {
       setCompMessage(message)
     }, tempmessage.length*150)
+  }
+
+  const fillAnswer = () => {
+    console.log("U: " +answers[levelcount][0])
+    console.log("P: " +answers[levelcount][1])
+    setFormUsername(answers[levelcount][0])
+    setFormPassword(answers[levelcount][1])
   }
 
   const handleSignIn = (username, password, remember) => {
@@ -257,7 +272,7 @@ const App = () => {
     }
   }
   else {
-    console.log("disabled")
+    console.log("submit disabled")
   }
 }
 
@@ -290,6 +305,9 @@ const App = () => {
       </Button>
       <Button onClick={newLevel}>
         Reset Level
+      </Button>
+      <Button onClick={fillAnswer}>
+        Answer
       </Button>
      </MyBox>
     </div>

@@ -33,14 +33,8 @@ export default function SignIn(props) {
   }, [props.formUsername])
 
   useEffect(() => {
-    setUsernameForm(props.formPassword)
+    setPasswordForm(props.formPassword)
   }, [props.formPassword])
-
-  useEffect(() => {
-    setUsernameForm(props.formPassword)
-  }, [props.formPassword])
-
-
   
   const handleSubmit = (event) => {
     event.preventDefault();
