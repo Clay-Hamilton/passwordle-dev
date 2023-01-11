@@ -71,6 +71,10 @@ export default function SignIn(props) {
     }
   };
 
+  const forgotPassword = () => {
+    props.forgotPassword("I believe in you :)")
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -101,6 +105,8 @@ export default function SignIn(props) {
               autoFocus
               value={usernameForm}
               onChange={handleChange}
+              error={!!props.usernameerror}
+              helperText={props.usernameerror}
             />
             <TextField
               margin="normal"
@@ -112,6 +118,8 @@ export default function SignIn(props) {
               id="password"
               value={passwordForm}
               onChange={handleChange}
+              error={!!props.passworderror}
+              helperText={props.passworderror}
             />
             <FormControlLabel
               control={
@@ -147,6 +155,11 @@ export default function SignIn(props) {
               }
             >
               Sign Up
+            </Button>
+            <Button 
+              onClick={forgotPassword}
+            >
+              Forgot Password?
             </Button>
           </Box>
         </Box>

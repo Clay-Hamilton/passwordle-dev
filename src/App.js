@@ -3,10 +3,8 @@ import './App.css';
 import Button from '@mui/material/Button';
 import SignIn from './SignIn';
 import Box from '@mui/material/Box';
-import { useSlotProps } from '@mui/base';
-import Typewriter2 from 'typewriter-effect/dist/core';
-import Typewriter from 'typewriter-effect';
 import TypewriterJS from './TypewriterJS';
+import MyBox from './MyBox';
 
 
 
@@ -20,6 +18,10 @@ const App = () => {
   const [didTryCapital, setDidTryCapital] = useState(false)
   const [formUsername, setFormUsername] = useState("")
   const [formPassword, setFormPassword] = useState("")
+  const [guesscount2, setGuessCount] = useState(0)
+  const [usernameerror, setUsernameError] = useState("")
+  const [passworderror, setPasswordError] = useState("")
+  const [signupenabled, setSignUpEnabled] = useState(true)
 
   const levelnames = [
     "Please Introduce Yourself", "The Beginning", "The End"
@@ -65,75 +67,94 @@ const App = () => {
     else if (levelcount == 3) {
       setFormUsername("Erica")
     }
-    console.log("changing level")
   }, [levelcount])
 
   const resetLevel = () => {
     setLevelCount(0)
-    setCompMessage(introcompmessages[levelcount]) //in case it's already at level 0:
-    setUsername("")
-    setPassword("")
-    setResetForm(!resetForm)
+    newLevel()
   }
   
   const newLevel = () => {
     setCompMessage(introcompmessages[levelcount])
     setUsername("")
     setPassword("")
+    setUsernameError("")
+    setPasswordError("")
     setResetForm(!resetForm)
+    setGuessCount(0)
+    setSignUpEnabled(true)
+  }
+
+  const forgotPassword = (message) => {
+    tempMessage(message)
+  }
+
+  const tempMessage = (tempmessage) => {
+    const message = compMessage
+    setCompMessage(tempmessage)
+    setTimeout(() => {
+      setCompMessage(message)
+    }, tempmessage.length*150)
   }
 
   const handleSignIn = (username, password, remember) => {
+    if (signupenabled) {
+    setUsernameError("")
+    setPasswordError("")
     setUsername(username)
+    setGuessCount((guesscount2+1))
     if (remember) {setRemember(true)}
     if (levelcount === 0) {
-      // console.log(password.length)
       if (!username) {
-        setCompMessage("Error: Please enter a username.")
+        setUsernameError("Please enter a username.")
       }
       else if (!password) {
-        setCompMessage("Error: Please enter a password.")
+        setPasswordError("Please enter a password.")
       }
       else if(password.length < 6) {
-        setCompMessage("Error: Your password cannot be shorter than 6 characters.")
+        setPasswordError("Your password cannot be shorter than 6 characters.")
       }
       else if(password.length > 255) {
-        setCompMessage('Error: Your password cannot be longer than 255 characters.')
+        setPasswordError('Your password cannot be longer than 255 characters.')
       }
       else if(password.match(/\s/u)) {
-        setCompMessage('Error: Your password cannot include spaces.')
+        setPasswordError('Your password cannot include spaces.')
       }
       else if(!password.match(/\d/u)) {
-        setCompMessage('Error: Your password must contain a number.')
+        setPasswordError('Your password must contain a number.')
       }
       else if(!password.match(/[a-z]/u)) {
-        setCompMessage('Error: Your password must contain a lowercase letter.')
+        setPasswordError('Your password must contain a lowercase letter.')
       }
       else if(!password.match(/[A-Z]/u)) {
-        setCompMessage('Error: Your password must contain a capital.')
+        setPasswordError('Your password must contain a capital.')
         setDidTryCapital(true)
       }
       else if(!password.match(/Funafuti/ui)) {
         if (!didTryCapital) {
-          setCompMessage('Error: Your password must contain a capital.')
+          setPasswordError('Your password must contain a capital.')
           setDidTryCapital(true)
         }
         else {
-          setCompMessage('Error: Specifically, the capital of Tuvalu.')
+          setPasswordError('Specifically, the capital of Tuvalu.')
         }
       }
     
       else {
         if (remember) {
+          setSignUpEnabled(false)
           setCompMessage("Fantastic! [" + username + "] is a great username and [" + password + "] is an... okay password. But I guess it'll do for now.")
           setTimeout(() => {
             setLevelCount(levelcount+1)
-          }, 6000)
+            newLevel()
+          }, compMessage.length*150)
         }
         else {
+          setSignUpEnabled(false)
           setCompMessage("Thanks for signing up! Welcome to Passwordle.")
           setTimeout(() => {
             setCompMessage("Ooh! You didn't tell me to remember you, so I... forgot your information. Sorry! You'll have to enter it again. :)")
+            setResetForm(!resetForm)
             setTimeout(() => {
               resetLevel()
             }, 6000)
@@ -143,6 +164,7 @@ const App = () => {
     }
     else if (levelcount === 1) {
       if (username !== "James") {
+        setUsernameError("Wrong username.")
         setCompMessage("Why did you change his username? Try that again.")
       }
       else if (username === "James" && password === "Hunter123") {
@@ -153,33 +175,48 @@ const App = () => {
         }, 4000)
       }
       else {
-        setCompMessage("Incorrect password.")
+        setPasswordError("Incorrect password.")
       }
     }
     else if (levelcount === 2) {//password: Elephant47!
+      let lengthguessed = false
       if(password.match(/\s/u)) {
-        setCompMessage('Error: Your password cannot include spaces.')
+        setPasswordError('Your password cannot include spaces.')
+      }
+      else if (password.length < 11 && !lengthguessed) {
+        setPasswordError("Your password must be longer than " + (password.length) + " characters.")
+        lengthguessed = true
+      }
+      else if (password.length > 11 && !lengthguessed) {
+        setPasswordError("Your password must be less than " + (password.length) + " characters.")
+        lengthguessed = true
+      }
+      else if (!password.match(/[A-Z]/) ) {
+        setPasswordError("Your password must contain an uppercase letter.")
+      }
+      else if (!password.match(/^[A-Z]/) ) {
+        setPasswordError("Your password must begin with an uppercase letter.")
+      }
+      else if (!password.match(/Elephant/i) ) {
+        setPasswordError("Your password must contain an animal that makes a \"trumpet\" sound.")
+      }
+      else if (!password.match(/[0-9]/) ) {
+        setPasswordError("Your password must contain a number.")
+      }
+      else if (!password.match(/47/) ) {
+        setPasswordError("Your password must contain the largest prime number less than 50.")
+      }
+      else if (!password.match(/!/) ) {
+        setPasswordError("Your password must contain \"excitement\".")
+      }
+      else if (!password.match(/!$/) ) {
+        setPasswordError("Your password must end with \"excitement\".")
       }
       else if (password.length < 11) {
-        setCompMessage("Your password must be at least " + (password.length+1) + " characters.")
+        setPasswordError("Your password must be longer than " + (password.length) + " characters, remember?")
       }
       else if (password.length > 11) {
-        setCompMessage("Your password must be less than " + (password.length) + " characters.")
-      }
-      else if (!password.match(/[A-Z]/u) ) {
-        setCompMessage("Your password must contain an uppercase letter.")
-      }
-      else if (!password.match(/Elephant/u) ) {
-        setCompMessage("Your password must contain an animal that makes a \"trumpet\" sound.")
-      }
-      else if (!password.match(/[0-9]/u) ) {
-        setCompMessage("Your password must contain a number.")
-      }
-      else if (!password.match(/47/u) ) {
-        setCompMessage("Your password must contain the largest prime number less than 50.")
-      }
-      else if (!password.match(/!/u) ) {
-        setCompMessage("Your password must contain \"excitement\".")
+        setPasswordError("Your password must be less than " + (password.length) + " characters, remember?")
       }
       else {
         setCompMessage("Thank you for setting your password. We'll \"try\" to remember it this time.")
@@ -191,6 +228,7 @@ const App = () => {
     }
     else if (levelcount === 3) {
       if (username !== "Erica") {
+        setUsernameError("Wrong username.")
         setCompMessage("Why did you change her username? Try that again.")
       }
       else if (username === "Erica" && password === "mushroom") {
@@ -201,7 +239,7 @@ const App = () => {
         }, 4000)
       }
       else {
-        setCompMessage("Incorrect password. Remember, her password hint was \"the room with no doors or windows\"")
+        setPasswordError("Incorrect password. Remember, her password hint was \"the room with no doors or windows\"")
       }
     }
     else if (levelcount == 4) {
@@ -213,10 +251,15 @@ const App = () => {
         }, 4000)
       }
       else {
-        setCompMessage("Incorrect password. I knew you didn't have what it takes.")
+        setPasswordError("Incorrect password.")
+        tempMessage("I knew you didn't have what it takes.")
       }
     }
   }
+  else {
+    console.log("disabled")
+  }
+}
 
   return (
     <div className="App">
@@ -227,23 +270,14 @@ const App = () => {
         reset={resetForm}
         formUsername={formUsername}
         formPassword={formPassword}
+        forgotPassword={forgotPassword}
         levelcount={levelcount}
-      ></SignIn>
-
-      <Box
-      sx={{
-        backgroundColor: "#fffbed",
-        boxShadow: 1,
-        borderRadius: 2,
-        p: 2,
-        minWidth: 300,
-        maxWidth: 500,
-        alignItems: "center",
-        justifyContent: "center",
-        margin: "auto",
-
-      }}
+        usernameerror={usernameerror}
+        passworderror={passworderror}
       >
+      </SignIn>
+
+    <MyBox>
       <h2>Level {levelcount}: {levelnames[levelcount]}</h2>
       <Button onClick={() => setLevelCount(levelcount - 1)}>
         Previous Level
@@ -257,7 +291,7 @@ const App = () => {
       <Button onClick={newLevel}>
         Reset Level
       </Button>
-      </Box>
+     </MyBox>
     </div>
   )
 }
