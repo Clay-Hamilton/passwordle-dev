@@ -66,7 +66,7 @@ export default function SignIn(props) {
   };
 
   const forgotPassword = () => {
-    props.forgotPassword("I believe in you :)")
+    props.forgotPassword("I believe you can remember it :)")
   }
 
   return (

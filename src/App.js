@@ -108,6 +108,8 @@ const App = () => {
   const fillAnswer = () => {
     console.log("U: " +answers[levelcount][0])
     console.log("P: " +answers[levelcount][1])
+    setFormUsername("")
+    setFormPassword("")
     setFormUsername(answers[levelcount][0])
     setFormPassword(answers[levelcount][1])
   }
